@@ -4,10 +4,10 @@ Its a plugin for MOAI according to the structure for plugins set up by Halfnelso
 
 Drop the class in java_host_files in the correct zipline package in your Android host. Then add the class to the list in Moai.java
 ```
-	private static String [] sExternalClasses = {
-		...
-    "com.ziplinegames.moai.MoaiSound",
-	};
+private static String [] sExternalClasses = {
+	...
+	"com.ziplinegames.moai.MoaiSound",
+};
 ```
 
 Add the plugin to your build according to https://github.com/moaiforge/moai-sdk/wiki/Using-Plugins
