@@ -1,23 +1,25 @@
 
-#include "moai-core/pch.h"
 #include <jni.h>
+#include "moai-core/pch.h"
 #include <moai-android/moaiext-jni.h>
 #include <moai-sound-android/MOAIAndroidSound.h>
 
 extern JavaVM* jvm;
 
-static STLString javaClassName = "com/ziplinegames/moai/MoaiSound";
+namespace {
+	STLString javaClassName = "com/ziplinegames/moai/MoaiSound";
 
-jmethodID getStaticMethod(jclass clazz, STLString methodName, STLString methodSignature) {
+	jmethodID getStaticMethod(jclass clazz, STLString methodName, STLString methodSignature) {
 
-	JNI_GET_ENV (jvm, env);
+		JNI_GET_ENV (jvm, env);
 
-	jmethodID method = env->GetStaticMethodID (clazz, methodName, methodSignature);
-	if (method == NULL) {
-		ZLLog::Print ("Unable to find static java method %s with signature %s", methodName.c_str(), methodSignature.c_str());
-		return NULL;
-	} else {
-		return method;
+		jmethodID method = env->GetStaticMethodID (clazz, methodName, methodSignature);
+		if (method == NULL) {
+			ZLLog::Print ("Unable to find static java method %s with signature %s", methodName.c_str(), methodSignature.c_str());
+			return NULL;
+		} else {
+			return method;
+		}
 	}
 }
 

@@ -15,7 +15,7 @@
 class MOAIAndroidSound :
 	public virtual MOAILuaObject {
 private:
-
+	
 	bool mLoop;
 	int mSoundId;
 	bool mUseMediaPlayer;
