@@ -103,9 +103,16 @@ public class MoaiSound {
     }
 
     public static void stopSound(int soundId, boolean useMediaPlayer) {
-        if (useMediaPlayer) {
-            MediaPlayerRef mediaPlayerRef = mediaPlayerRefMap.get(soundId);
+        if (useMediaPlayer) {  
+            MediaPlayerRef mediaPlayerRef = mediaPlayerRefMap.get(soundId);  
             mediaPlayerRef.player.stop();
+            mediaPlayerRef.player.reset();
+            try {
+                mediaPlayerRef.player.setDataSource(mediaPlayerRef.fileDescriptor.getFileDescriptor(), mediaPlayerRef.fileDescriptor.getStartOffset(), mediaPlayerRef.fileDescriptor.getLength());
+                mediaPlayerRef.player.prepare();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }      
         } else {
             if (soundPoolLatestStreamMap.containsKey(soundId)) {
                 int streamId = soundPoolLatestStreamMap.get(soundId);
@@ -156,7 +163,7 @@ public class MoaiSound {
         }
 
         int mediaPlayerIndex = ++mediaPlayerNextIndex;
-        mediaPlayerRefMap.put(mediaPlayerIndex, new MediaPlayerRef(mediaPlayer));
+        mediaPlayerRefMap.put(mediaPlayerIndex, new MediaPlayerRef(mediaPlayer, fileDescriptor));
         return mediaPlayerIndex;
     }
 
@@ -174,9 +181,11 @@ public class MoaiSound {
     private static class MediaPlayerRef {
         public final MediaPlayer player;
         public boolean wasPlaying = false;
+        public AssetFileDescriptor fileDescriptor = null;
 
-        public MediaPlayerRef(MediaPlayer mediaPlayer) {
+        public MediaPlayerRef(MediaPlayer mediaPlayer, AssetFileDescriptor fDescriptor) {
             this.player = mediaPlayer;
+            this.fileDescriptor = fDescriptor;
         }
     }
 }
